@@ -37,10 +37,7 @@
         errorDiv.textContent = 'Authenticating...';
 
         try {
-            // 1. Gather form data
             const formData = new FormData(e.target);
-            
-            // 2. Send credentials to the Backend API
             const res = await fetch('api.php?action=login', {
                 method: 'POST',
                 body: new URLSearchParams(formData)
@@ -48,15 +45,10 @@
             const data = await res.json();
 
             if (data.status === 'success') {
-                // 3. SUCCESS: Save the Zero Trust Token
-                // The browser stores this "ID Card" to show it for future requests.
                 localStorage.setItem('zt_token', data.token);
                 localStorage.setItem('zt_role', data.role);
-                
-                // 4. Redirect to the secure dashboard
                 window.location.href = 'dashboard.php';
             } else {
-                // 5. FAILURE: Show error message
                 errorDiv.textContent = data.message;
             }
         } catch (err) {
